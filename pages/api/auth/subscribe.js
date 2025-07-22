@@ -15,10 +15,10 @@ async function handler(req, res) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    const { code, targetUserId } = req.body;
+    const { code, targetUserId, type = 'monthly' } = req.body;
 
-    if (!code) {
-      return res.status(400).json({ error: 'Code is required' });
+    if (!code && !targetUserId) {
+      return res.status(400).json({ error: 'Code or target user ID required' });
     }
 
     let userId = user.id;

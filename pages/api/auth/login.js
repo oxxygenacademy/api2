@@ -1,7 +1,8 @@
 import { query } from '../../../lib/db.js';
 import { comparePassword, generateToken, validateIraqiPhone } from '../../../lib/auth.js';
+import { handleCors } from '../../../lib/cors.js';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -66,4 +67,8 @@ export default async function handler(req, res) {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+export default function(req, res) {
+  return handleCors(req, res, handler);
 }

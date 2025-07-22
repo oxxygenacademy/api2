@@ -1,6 +1,7 @@
 import { query } from '../../../lib/db.js';
+import { handleCors } from '../../../lib/cors.js';
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -24,7 +25,7 @@ export default async function handler(req, res) {
       [id]
     );
 
-    // جلب الدروس لكل فصل (معرفات فقط)
+    // جلب الدروس لكل فصل
     for (let section of sections) {
       section.lessons = await query(
         'SELECT id, title, order_index FROM lessons WHERE section_id = ? ORDER BY order_index',
@@ -46,4 +47,8 @@ export default async function handler(req, res) {
     console.error('Course details error:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
+}
+
+export default function(req, res) {
+  return handleCors(req, res, handler);
 }
