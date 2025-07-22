@@ -1,13 +1,10 @@
-const { startConnectionCleanup } = require('./lib/cleanup.js');
-
-// بدء تنظيف الاتصالات
-if (typeof startConnectionCleanup === 'function') {
-  startConnectionCleanup();
-}
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'standalone',
   reactStrictMode: true,
+  experimental: {
+    serverComponentsExternalPackages: ['mysql2']
+  },
   async headers() {
     return [
       {
@@ -23,4 +20,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;
